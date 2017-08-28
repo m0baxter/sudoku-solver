@@ -17,7 +17,7 @@ class Square(object):
 
         return self.mark != None
 
-    def possibilities(self):
+    def getPossibilities(self):
         """Returns a list of possible marks for the square."""
 
         return self.possibilities
@@ -25,7 +25,7 @@ class Square(object):
     def placeMark(self, mark):
         """Mark the square with mark. Returns whether or not the square was successfully marked."""
 
-        if ( mark in self.possibilities() ):
+        if ( mark in self.getPossibilities() ):
             self.mark = mark
             self.possibilities = set([])
 
