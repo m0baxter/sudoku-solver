@@ -50,8 +50,8 @@ which represents the sudoku puzzle
 ## Test Cases
 All test cases were taken from *Sudoku Puzzles*, Vol. 168, Kappa Books 2011.
 
--One-star puzzles: 1, 14, 19, 22, and 24.
--Two-star puzzles: 29, 32, 36, 40, and 52.
--Three-star puzzles: 55, 59, 68, 72, and 74.
--Four-Star puzzles: 81, 87, 91, 95, and 101.
+- One-star puzzles: 1, 14, 19, 22, and 24.
+- Two-star puzzles: 29, 32, 36, 40, and 52.
+- Three-star puzzles: 55, 59, 68, 72, and 74.
+- Four-Star puzzles: 81, 87, 91, 95, and 101.
 
