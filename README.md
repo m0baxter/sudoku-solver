@@ -12,15 +12,15 @@ python sudokuSolver.py <puzzle>
 where `<puzzle>` is a file of the form
 
 ```
-x x x 9 4 x x x x
-x 4 x x x x 3 x 1
-x 5 x 1 x x x 8 x
-x x x 3 2 x 8 x x
-8 x 2 x x x 7 x 9
-x x 9 x 7 1 x x x
-x 3 x x x 6 x 5 x
-5 x 4 x x x x 9 x
-x x x x 8 4 x x x
+1 5 x 8 x 2 x x 7
+x 6 x 7 x x x 2 8
+x 2 x 5 x 9 x x 3
+x 1 2 x x x x 4 5
+4 x 3 x 2 x 7 x 1
+5 9 x x x x 8 3 x
+2 x x 3 x 6 x 8 x
+9 3 x x x 8 x 5 x
+6 x x 2 x 1 x 7 9
 ```
 
 which represents the sudoku puzzle
