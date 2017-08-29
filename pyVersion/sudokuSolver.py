@@ -5,8 +5,6 @@ import copy
 from puzzle import *
 
 
-
-
 def solvePuzzle(puzzle):
     """Solve the sudoku puzzle."""
 

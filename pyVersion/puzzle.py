@@ -254,9 +254,3 @@ class Puzzle(object):
 
         return
 
-
-if __name__ == "__main__":
-
-    puzzle = Puzzle.fromFile( "test.txt")
-    puzzle.printPuzzle()
-
