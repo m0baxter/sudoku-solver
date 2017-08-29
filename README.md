@@ -1,7 +1,7 @@
 # sudoku-solver
 A program for solving sudoku puzzles.
 
-##Python
+## Python
 
 Run with the command
 
