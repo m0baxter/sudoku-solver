@@ -5,13 +5,13 @@ A program for solving sudoku puzzles.
 
 Run with the command
 
-'''
+```
 python sudokuSolver.py <puzzle>
-'''
+```
 
-where '<puzzle>' is a file of the form
+where `<puzzle>` is a file of the form
 
-'''
+```
 x x x 9 4 x x x x
 x 4 x x x x 3 x 1
 x 5 x 1 x x x 8 x
@@ -21,10 +21,11 @@ x x 9 x 7 1 x x x
 x 3 x x x 6 x 5 x
 5 x 4 x x x x 9 x
 x x x x 8 4 x x x
-'''
+```
 
 which represents the sudoku puzzle
 
+```
    ╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗
    ║ 1 │ 5 │   ║ 8 │   │ 2 ║   │   │ 7 ║
    ╟───┼───┼───╫───┼───┼───╫───┼───┼───╢
@@ -44,6 +45,7 @@ which represents the sudoku puzzle
    ╟───┼───┼───╫───┼───┼───╫───┼───┼───╢
    ║ 6 │   │   ║ 2 │   │ 1 ║   │ 7 │ 9 ║
    ╚═══╧═══╧═══╩═══╧═══╧═══╩═══╧═══╧═══╝
+```
 
 ## Test Cases
 All test cases were taken from *Sudoku Puzzles*, Vol. 168, Kappa Books 2011.
