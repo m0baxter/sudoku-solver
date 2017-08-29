@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     path = sys.argv[1]
 
-    puzzle = Puzzle.fromFile( "test.txt")
+    puzzle = Puzzle.fromFile( path )
 
     print "Puzzle to solve:"
     puzzle.printPuzzle()
