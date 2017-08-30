@@ -73,7 +73,6 @@ class Puzzle(object):
     def __iniit__(self, grid):
 
         self.grid = grid
-        self.solved = False
         self.unmarked = [ self.grid.keys()]
 
         self.updateMarked()
@@ -143,7 +142,7 @@ class Puzzle(object):
         changed = False
         square = self.grid[(i,j)]
 
-        marks = [ self.grid[(i,k)].getMark() for k in range(1,10) ]
+        marks = [ self.grid[(k,j)].getMark() for k in range(1,10) ]
 
         for m in marks:
             try:
@@ -163,7 +162,7 @@ class Puzzle(object):
         changed = False
         square = self.grid[(i,j)]
 
-        marks = [ self.grid[(k,j)].getMark() for k in range(1,10) ]
+        marks = [ self.grid[(i,k)].getMark() for k in range(1,10) ]
 
         for m in marks:
             try:

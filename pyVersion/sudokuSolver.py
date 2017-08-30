@@ -30,10 +30,11 @@ def solvePuzzle(puzzle):
         unmarked = p.getUnmarked()
 
         if ( len(unmarked) == 0 ):
+            print "here1"
             return p
 
         else:
-            s = unmarked[0]
+            s = unmarked.pop()
             possible = p.grid[s].getPossibilities()
 
             for m in possible:
@@ -41,9 +42,11 @@ def solvePuzzle(puzzle):
                 pGuess.markSquare( s[0], s[1], m )
 
                 if ( len(pGuess.getUnmarked()) == 0 ):
+                    print "here2"
                     return pGuess
                 queue.append( pGuess )
 
+    print "here3"
     return queue[0]
 
 
