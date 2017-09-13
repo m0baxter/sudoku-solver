@@ -9,6 +9,15 @@
 class Puzzle {
 
    public:
+      Puzzle( std::map< std::pair<int, int>, Square > );
+      Puzzle( const char* );
+      bool markSquare( const int, const int, const int );
+      std::vector< std::pair<int, int> > getUnmarked();
+      bool columnCheck( const int, const int );
+      bool rowCheck( const int, const int );
+      bool blockCheck( const int, const int );
+      bool markable( const int, const int );
+      void printPuzzle();
 
    private:
       static std::vector< std::pair<int,int> > block1 = { std::make_pair(1,1), std::make_pair(1,2), std::make_pair(1,3),
@@ -40,6 +49,10 @@ class Puzzle {
                                                           std::make_pair(9,7), std::make_pair(9,8), std::make_pair(9,9) };
       std::map< std::pair<int, int>, Square > grid;
       std::vector< std::pair<int, int> > unmarked;
+      std::vector< std::pair<int,int> > squareToBlock(const int, const int);
+      int getMark( const int, const int );
+      bool squareEmpty( const int, const int );
+      void updateMarked();
 
 };
 
