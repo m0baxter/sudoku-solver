@@ -1,4 +1,5 @@
 
+#include <string>
 #include <set>
 
 #ifndef SQUARE_HPP
@@ -12,6 +13,7 @@ class Square {
       bool marked();
       std::set<int>  getPossibilities();
       bool placeMark( const int );
+      std::string toString();
 
    private:
       int mark;

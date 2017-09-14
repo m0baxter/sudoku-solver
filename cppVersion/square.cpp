@@ -50,3 +50,15 @@ bool Square::placeMark( const int m ) {
    }
 }
 
+
+std::string Square::toString() {
+   /*returns a string representing the marker in the square.*/
+
+   if ( mark == 0 ) {
+      return " ";
+   }
+   else {
+      return std::to_string( mark );
+   }
+}
+
