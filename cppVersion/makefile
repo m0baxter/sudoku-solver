@@ -11,8 +11,8 @@ sudokuSolver : $(OBJ)
 %.o: %.cpp
 	$(COMP) $(FLAGS) -MMD -MP -c $< -o $@
 
-sudokuSolver.o : .cpp wavefunction.hpp makefile
-	        $(COMP) -c $(FLAGS) main.cpp
+sudokuSolver.o : sudokuSolver.cpp
+	        $(COMP) -c $(FLAGS) sudokuSolver.cpp
 clean:
 	rm  *.d *.o
 	

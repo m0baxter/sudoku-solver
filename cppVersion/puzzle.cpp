@@ -5,14 +5,23 @@
 #include <iostream>
 #include <fstream>
 #include "StringManipulators.hpp"
+#include "keysNvals.hpp"
 #include "puzzle.hpp"
+
+
+bool inRange( const int i, const int lower, const int upper ) {
+   /*Determines whether lower <= i <= upper.*/
+
+   return (unsigned)(i - lower) <= (upper - lower);
+}
 
 
 Puzzle::Puzzle( std::map< std::pair<int, int>, Square > grd ) {
    /*Creates a sudoku puzzle object from a map representing the puzzle board.*/
 
    grid = grd;
-   unmarked = getKeys< std::pair<int,int>, int >( grid );
+   unmarked = getKeys< std::pair<int,int>, Square >( grid );
+   genBlocks();
    updateMarked();
 }
 
@@ -42,7 +51,8 @@ Puzzle::Puzzle( const char* path ) {
    }
 
    grid = puzzle;
-   unmarked = getKeys< std::pair<int,int>, int >( grid );
+   unmarked = getKeys< std::pair<int,int>, Square >( grid );
+   genBlocks();
    updateMarked();
 }
 
@@ -80,14 +90,21 @@ std::vector< std::pair<int,int> > Puzzle::squareToBlock( const int i, const int 
 }
 
 
-int Puzzle::getMark( const int, const int ) {
+std::map< std::pair<int,int>, Square > Puzzle::getGrid() {
+   /*Returns the puzzle grid.*/
+
+   return grid;
+}
+
+
+int Puzzle::getMark( const int i, const int j ) {
    /*Returns the marker in square (i, j).*/
 
    return grid.at( std::make_pair(i,j) ).getMark();
 }
 
 
-bool Puzzle::squareEmpty( const int, const int ) {
+bool Puzzle::squareEmpty( const int i , const int j ) {
    /*Determines whether or not the square is empty.*/
 
    return getMark(i,j) == 0;
@@ -97,7 +114,7 @@ bool Puzzle::squareEmpty( const int, const int ) {
 void Puzzle::updateMarked() {
    /*Updates the vector of unmarked squares.*/
 
-   newUnmarked = std::vector< std::pair<int,int> >;
+   std::vector< std::pair<int,int> > newUnmarked;
 
    for (auto &s : unmarked) {
       if ( squareEmpty(s.first, s.second) ) {
@@ -126,10 +143,85 @@ std::vector< std::pair<int, int> > Puzzle::getUnmarked() {
 }
 
 
-bool columnCheck( const int, const int );
-bool rowCheck( const int, const int );
-bool blockCheck( const int, const int );
-bool markable( const int, const int );
+std::vector< std::pair<int, int> >* Puzzle::getUnmarkedRef() {
+   /*Returns the vector of unmarked squares.*/
+
+   return &unmarked;
+}
+
+bool Puzzle::columnCheck( const int i, const int j ) {
+   /*Updates the possibilities for square (i,j) based on marks in the column.*/
+
+   bool changed = false;
+   std::vector< std::pair<int,int> > marks;
+   std::set<int> &possibilities = grid.at( std::make_pair(i,j) ).getPossibilities();
+
+   //Collect all marks in the column:
+   for (int k = 1; k < 10; ++k ) {
+      marks.push_back( grid.at( std::make_pair(k,j) ).getMark() );
+   }
+
+   for (auto &m : marks) {
+      change |= possibilities.erase(m);
+   }
+
+   return changed;
+}
+
+
+bool Puzzle::rowCheck( const int i, const int j ) {
+   /*Updates the possibilities for square (i,j) based on marks in the row.*/
+
+   bool changed = false;
+   std::vector< std::pair<int,int> > marks;
+   std::set<int> &possibilities = grid.at( std::make_pair(i,j) ).getPossibilities();
+
+   //Collect all marks in the row:
+   for (int k = 1; k < 10; ++k ) {
+      marks.push_back( grid.at( std::make_pair(i,k) ).getMark() );
+   }
+
+   for (auto &m : marks) {
+      change |= possibilities.erase(m);
+   }
+
+   return changed;
+}
+
+
+bool Puzzle::blockCheck( const int i, const int j ) {
+   /*Updates the possibilities for square (i,j) based on marks in the block.*/
+
+   bool changed = false;
+   std::vector< std::pair<int,int> > marks;
+   std::set<int> &possibilities = grid.at( std::make_pair(i,j) ).getPossibilities();
+
+   //Collect all marks in the block:
+   for ( auto &s : squareToBlock(i,j) ) {
+      marks.push_back( grid.at( s ).getMark() );
+   }
+
+   for (auto &m : marks) {
+      change |= possibilities.erase(m);
+   }
+
+   return changed;
+}
+
+
+bool Puzzle::markable( const int i, const int j ) {
+   /*Determines if the square (i,j) can be marked.*/
+
+   std::set<int> possible =  grid.at( std::make_pair(i,j) ).getPossibilities();
+
+   if ( possible.size() == 1 ) {
+      return markSquare( i, j, *possible.begin() );
+   }
+   else {
+      return false;
+   }
+}
+
 
 void Puzzle::printPuzzle() {
 
@@ -157,9 +249,44 @@ void Puzzle::printPuzzle() {
 }
 
 
-bool inRange( const int i, const int lower, const int upper ) {
-   /*Determines whether lower <= i <= upper.*/
+void Puzzle::genBlocks() {
+   /*Generates the blocks.*/
 
-   return (unsigned)(i - lower) <= (upper - lower);
+   block1 = { std::make_pair(1,1), std::make_pair(1,2), std::make_pair(1,3),
+              std::make_pair(2,1), std::make_pair(2,2), std::make_pair(2,3),
+              std::make_pair(3,1), std::make_pair(3,2), std::make_pair(3,3) };
+
+   block2 = { std::make_pair(1,4), std::make_pair(1,5), std::make_pair(1,6),
+              std::make_pair(2,4), std::make_pair(2,5), std::make_pair(2,6),
+              std::make_pair(3,4), std::make_pair(3,5), std::make_pair(3,6) };
+
+   block3 = { std::make_pair(1,7), std::make_pair(1,8), std::make_pair(1,9),
+              std::make_pair(2,7), std::make_pair(2,8), std::make_pair(2,9),
+              std::make_pair(3,7), std::make_pair(3,8), std::make_pair(3,9) };
+
+   block4 = { std::make_pair(4,1), std::make_pair(4,2), std::make_pair(4,3),
+              std::make_pair(5,1), std::make_pair(5,2), std::make_pair(5,3),
+              std::make_pair(6,1), std::make_pair(6,2), std::make_pair(6,3) };
+
+   block5 = { std::make_pair(4,4), std::make_pair(4,5), std::make_pair(4,6),
+              std::make_pair(5,4), std::make_pair(5,5), std::make_pair(5,6),
+              std::make_pair(6,4), std::make_pair(6,5), std::make_pair(6,6) };
+
+   block6 = { std::make_pair(4,7), std::make_pair(4,8), std::make_pair(4,9),
+              std::make_pair(5,7), std::make_pair(5,8), std::make_pair(5,9),
+              std::make_pair(6,7), std::make_pair(6,8), std::make_pair(6,9) };
+
+   block7 = { std::make_pair(7,1), std::make_pair(7,2), std::make_pair(7,3),
+              std::make_pair(8,1), std::make_pair(8,2), std::make_pair(8,3),
+              std::make_pair(9,1), std::make_pair(9,2), std::make_pair(9,3) };
+
+   block8 = { std::make_pair(7,4), std::make_pair(7,5), std::make_pair(7,6),
+              std::make_pair(8,4), std::make_pair(8,5), std::make_pair(8,6),
+              std::make_pair(9,4), std::make_pair(9,5), std::make_pair(9,6) };
+
+   block9 = { std::make_pair(7,7), std::make_pair(7,8), std::make_pair(7,9),
+              std::make_pair(8,7), std::make_pair(8,8), std::make_pair(8,9),
+              std::make_pair(9,7), std::make_pair(9,8), std::make_pair(9,9) };
+
 }
 
