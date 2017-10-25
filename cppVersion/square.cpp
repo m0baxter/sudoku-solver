@@ -2,6 +2,13 @@
 #include <set>
 #include "square.hpp"
 
+Square::Square() {
+   /*Creates a Square with marker m. If m == 0 the square is empty.*/
+
+   mark = 0;
+   possibilities = std::set<int>( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+}
+
 
 Square::Square( const int m ) {
    /*Creates a Square with marker m. If m == 0 the square is empty.*/
@@ -33,6 +40,13 @@ std::set<int> Square::getPossibilities() {
    /*eturns a set of possible marks for the square.*/
 
    return possibilities;
+}
+
+
+std::set<int>* Square::getPossibilitiesRef() {
+   /*eturns a set of possible marks for the square.*/
+
+   return &possibilities;
 }
 
 

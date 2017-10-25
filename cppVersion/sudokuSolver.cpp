@@ -3,7 +3,6 @@
 #include <set>
 #include <utility>
 #include <iostream>
-#include "keysNvals.hpp"
 #include "puzzle.hpp"
 
 
@@ -12,7 +11,11 @@ Puzzle solvePuzzle( Puzzle puzzle ) {
 
    std::vector<Puzzle> queue = { puzzle };
 
-   for ( Puzzle &p : queue ) {
+   while ( queue.size() != 0 ) {
+      std::cout << queue.size() + 1 << std::endl;
+
+      Puzzle p = *queue.begin();
+      queue.erase( queue.begin() );
 
       bool puzzleChanged = true;
 
@@ -26,11 +29,11 @@ Puzzle solvePuzzle( Puzzle puzzle ) {
             puzzleChanged |= p.rowCheck( s.first, s.second );
             puzzleChanged |= p.blockCheck( s.first, s.second );
             puzzleChanged |= p.markable( s.first, s.second );
-
          }
       }
 
       std::vector< std::pair<int,int> > *unmarked = p.getUnmarkedRef();
+
 
       if ( (*unmarked).size() == 0 ) {
          return p;
@@ -41,7 +44,7 @@ Puzzle solvePuzzle( Puzzle puzzle ) {
          std::set<int> possible = p.getGrid().at(s).getPossibilities();
 
          for (auto &m : possible) {
-            Puzzle pGuess = p;
+            Puzzle pGuess(p);
             pGuess.markSquare( s.first, s.second, m );
 
             if ( pGuess.getUnmarked().size() == 0 ) {
@@ -59,7 +62,8 @@ Puzzle solvePuzzle( Puzzle puzzle ) {
 
 int main ( int argc, char* argv[] ) {
 
-   Puzzle puzzle = Puzzle( argv[1] );
+   //Puzzle puzzle = Puzzle( argv[1] );
+   Puzzle puzzle( argv[1] );
 
    std::cout << "Puzzle to solve:" <<std::endl;
    puzzle.printPuzzle();

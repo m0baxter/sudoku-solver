@@ -11,8 +11,6 @@ sudokuSolver : $(OBJ)
 %.o: %.cpp
 	$(COMP) $(FLAGS) -MMD -MP -c $< -o $@
 
-sudokuSolver.o : sudokuSolver.cpp
-	        $(COMP) -c $(FLAGS) sudokuSolver.cpp
 clean:
 	rm  *.d *.o
 	

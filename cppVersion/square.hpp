@@ -8,10 +8,12 @@
 class Square {
 
    public:
+      Square();
       Square( const int );
       int getMark();
       bool marked();
       std::set<int>  getPossibilities();
+      std::set<int>*  getPossibilitiesRef();
       bool placeMark( const int );
       std::string toString();
 

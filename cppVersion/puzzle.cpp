@@ -6,6 +6,7 @@
 #include <fstream>
 #include "StringManipulators.hpp"
 #include "keysNvals.hpp"
+#include "square.hpp"
 #include "puzzle.hpp"
 
 
@@ -21,6 +22,28 @@ Puzzle::Puzzle( std::map< std::pair<int, int>, Square > grd ) {
 
    grid = grd;
    unmarked = getKeys< std::pair<int,int>, Square >( grid );
+   genBlocks();
+   updateMarked();
+}
+
+Puzzle::Puzzle( const Puzzle& p ) {
+   /*Copy constructor for Puzzle. Performs a deep copy.*/
+
+   std::map< std::pair<int, int>, Square >  oldGrid = p.getGrid();
+   std::map< std::pair<int, int>, Square > newGrid;
+
+   std::vector< std::pair<int,int> > keys = getKeys< std::pair<int,int>, Square >( oldGrid );
+
+   for ( auto &k : keys ) {
+
+      Square oldSquare = oldGrid.at( k );
+      Square newSquare = Square( oldSquare.getMark() );
+
+      newGrid[k] = newSquare;
+   }
+
+   grid = newGrid;
+   unmarked = keys;
    genBlocks();
    updateMarked();
 }
@@ -90,7 +113,7 @@ std::vector< std::pair<int,int> > Puzzle::squareToBlock( const int i, const int 
 }
 
 
-std::map< std::pair<int,int>, Square > Puzzle::getGrid() {
+std::map< std::pair<int,int>, Square > Puzzle::getGrid() const {
    /*Returns the puzzle grid.*/
 
    return grid;
@@ -128,15 +151,15 @@ void Puzzle::updateMarked() {
 
 bool Puzzle::markSquare( const int i, const int j, const int m ) {
    /*Places the mark m in square (i,j) if possible.*/
+   
+   bool marked = grid.at( std::make_pair(i,j) ).placeMark( m );
+   updateMarked();
 
-    bool marked = grid.at( std::make_pair(i,j) ).placeMark( m );
-    updateMarked();
-
-    return marked;
+   return marked;
 }
 
 
-std::vector< std::pair<int, int> > Puzzle::getUnmarked() {
+std::vector< std::pair<int, int> > Puzzle::getUnmarked() const {
    /*Returns the vector of unmarked squares.*/
 
    return unmarked;
@@ -153,16 +176,13 @@ bool Puzzle::columnCheck( const int i, const int j ) {
    /*Updates the possibilities for square (i,j) based on marks in the column.*/
 
    bool changed = false;
-   std::vector< std::pair<int,int> > marks;
-   std::set<int> &possibilities = grid.at( std::make_pair(i,j) ).getPossibilities();
+   std::set<int> *possibilities = grid.at( std::make_pair(i,j) ).getPossibilitiesRef();
 
    //Collect all marks in the column:
    for (int k = 1; k < 10; ++k ) {
-      marks.push_back( grid.at( std::make_pair(k,j) ).getMark() );
-   }
+      int mark = grid.at( std::make_pair(k,j) ).getMark();
 
-   for (auto &m : marks) {
-      change |= possibilities.erase(m);
+      changed |= (*possibilities).erase(mark);
    }
 
    return changed;
@@ -173,16 +193,13 @@ bool Puzzle::rowCheck( const int i, const int j ) {
    /*Updates the possibilities for square (i,j) based on marks in the row.*/
 
    bool changed = false;
-   std::vector< std::pair<int,int> > marks;
-   std::set<int> &possibilities = grid.at( std::make_pair(i,j) ).getPossibilities();
+   std::set<int> *possibilities = grid.at( std::make_pair(i,j) ).getPossibilitiesRef();
 
    //Collect all marks in the row:
    for (int k = 1; k < 10; ++k ) {
-      marks.push_back( grid.at( std::make_pair(i,k) ).getMark() );
-   }
+      int mark = grid.at( std::make_pair(i,k) ).getMark();
 
-   for (auto &m : marks) {
-      change |= possibilities.erase(m);
+      changed |= (*possibilities).erase(mark);
    }
 
    return changed;
@@ -193,16 +210,14 @@ bool Puzzle::blockCheck( const int i, const int j ) {
    /*Updates the possibilities for square (i,j) based on marks in the block.*/
 
    bool changed = false;
-   std::vector< std::pair<int,int> > marks;
-   std::set<int> &possibilities = grid.at( std::make_pair(i,j) ).getPossibilities();
+   std::vector<int> marks;
+   std::set<int> *possibilities = grid.at( std::make_pair(i,j) ).getPossibilitiesRef();
 
    //Collect all marks in the block:
    for ( auto &s : squareToBlock(i,j) ) {
-      marks.push_back( grid.at( s ).getMark() );
-   }
+      int mark = grid.at( s ).getMark();
 
-   for (auto &m : marks) {
-      change |= possibilities.erase(m);
+      changed |= (*possibilities).erase(mark);
    }
 
    return changed;
@@ -213,6 +228,7 @@ bool Puzzle::markable( const int i, const int j ) {
    /*Determines if the square (i,j) can be marked.*/
 
    std::set<int> possible =  grid.at( std::make_pair(i,j) ).getPossibilities();
+   //printPuzzle();
 
    if ( possible.size() == 1 ) {
       return markSquare( i, j, *possible.begin() );
@@ -227,7 +243,7 @@ void Puzzle::printPuzzle() {
 
    std::cout << std::endl;
    std::cout << "   ╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗" << std::endl;
-   std::cout << "   ║ " + grid.at(std::make_pair(1,1)).toString() + " │ " + grid.at(std::make_pair(1,2)).toString() + " │ " + grid.at(std::make_pair(1,3)).toString() + " ║ " + grid.at(std::make_pair(1,4)).toString() + " │ " + grid.at(std::make_pair(1,5)).toString() + " │ " + grid.at(std::make_pair(1,6)).toString() + " ║ " + grid.at(std::make_pair(1,7)).toString() + " │ " + grid.at(std::make_pair(1,8)).toString() + " │ " + grid.at(std::make_pair(1,9)).toString() + " ║" << std::endl;
+   std::cout << "   ║ " + grid.at(std::make_pair(1,1)).toString() << + " │ " + grid.at(std::make_pair(1,2)).toString() + " │ " + grid.at(std::make_pair(1,3)).toString() + " ║ " + grid.at(std::make_pair(1,4)).toString() + " │ " + grid.at(std::make_pair(1,5)).toString() + " │ " + grid.at(std::make_pair(1,6)).toString() + " ║ " + grid.at(std::make_pair(1,7)).toString() + " │ " + grid.at(std::make_pair(1,8)).toString() + " │ " + grid.at(std::make_pair(1,9)).toString() + " ║" << std::endl;
    std::cout << "   ╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" << std::endl;
    std::cout << "   ║ " + grid.at(std::make_pair(2,1)).toString() + " │ " + grid.at(std::make_pair(2,2)).toString() + " │ " + grid.at(std::make_pair(2,3)).toString() + " ║ " + grid.at(std::make_pair(2,4)).toString() + " │ " + grid.at(std::make_pair(2,5)).toString() + " │ " + grid.at(std::make_pair(2,6)).toString() + " ║ " + grid.at(std::make_pair(2,7)).toString() + " │ " + grid.at(std::make_pair(2,8)).toString() + " │ " + grid.at(std::make_pair(2,9)).toString() + " ║" << std::endl;
    std::cout << "   ╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" << std::endl;
