@@ -31,3 +31,4 @@ std::vector<valType> getValues( std::map<keyType, valType> const& map ) {
 }
 
 #endif
+

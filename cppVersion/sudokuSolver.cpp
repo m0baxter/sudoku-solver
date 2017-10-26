@@ -1,4 +1,5 @@
 
+#include <queue>
 #include <vector>
 #include <set>
 #include <utility>
@@ -9,13 +10,13 @@
 Puzzle solvePuzzle( Puzzle puzzle ) {
    /*Solve the sudoku puzzle.*/
 
-   std::vector<Puzzle> queue = { puzzle };
+   std::queue<Puzzle> queue;
+   queue.push( puzzle );
 
-   while ( queue.size() != 0 ) {
-      std::cout << queue.size() + 1 << std::endl;
+   while ( not queue.empty() ) {
 
-      Puzzle p = *queue.begin();
-      queue.erase( queue.begin() );
+      Puzzle p = queue.front();
+      queue.pop();
 
       bool puzzleChanged = true;
 
@@ -34,7 +35,6 @@ Puzzle solvePuzzle( Puzzle puzzle ) {
 
       std::vector< std::pair<int,int> > *unmarked = p.getUnmarkedRef();
 
-
       if ( (*unmarked).size() == 0 ) {
          return p;
       }
@@ -51,21 +51,20 @@ Puzzle solvePuzzle( Puzzle puzzle ) {
                return pGuess;
             }
 
-            queue.push_back( pGuess );
+            queue.push( pGuess );
          }
       }
    }
 
-   return *queue.begin();
+   return queue.front();
 }
 
 
 int main ( int argc, char* argv[] ) {
 
-   //Puzzle puzzle = Puzzle( argv[1] );
    Puzzle puzzle( argv[1] );
 
-   std::cout << "Puzzle to solve:" <<std::endl;
+   std::cout << "\nPuzzle to solve:" <<std::endl;
    puzzle.printPuzzle();
 
    Puzzle solvedPuzzle = solvePuzzle( puzzle );

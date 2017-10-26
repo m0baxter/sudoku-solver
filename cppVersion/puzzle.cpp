@@ -243,7 +243,7 @@ void Puzzle::printPuzzle() {
 
    std::cout << std::endl;
    std::cout << "   ╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗" << std::endl;
-   std::cout << "   ║ " + grid.at(std::make_pair(1,1)).toString() << + " │ " + grid.at(std::make_pair(1,2)).toString() + " │ " + grid.at(std::make_pair(1,3)).toString() + " ║ " + grid.at(std::make_pair(1,4)).toString() + " │ " + grid.at(std::make_pair(1,5)).toString() + " │ " + grid.at(std::make_pair(1,6)).toString() + " ║ " + grid.at(std::make_pair(1,7)).toString() + " │ " + grid.at(std::make_pair(1,8)).toString() + " │ " + grid.at(std::make_pair(1,9)).toString() + " ║" << std::endl;
+   std::cout << "   ║ " + grid.at(std::make_pair(1,1)).toString() + " │ " + grid.at(std::make_pair(1,2)).toString() + " │ " + grid.at(std::make_pair(1,3)).toString() + " ║ " + grid.at(std::make_pair(1,4)).toString() + " │ " + grid.at(std::make_pair(1,5)).toString() + " │ " + grid.at(std::make_pair(1,6)).toString() + " ║ " + grid.at(std::make_pair(1,7)).toString() + " │ " + grid.at(std::make_pair(1,8)).toString() + " │ " + grid.at(std::make_pair(1,9)).toString() + " ║" << std::endl;
    std::cout << "   ╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" << std::endl;
    std::cout << "   ║ " + grid.at(std::make_pair(2,1)).toString() + " │ " + grid.at(std::make_pair(2,2)).toString() + " │ " + grid.at(std::make_pair(2,3)).toString() + " ║ " + grid.at(std::make_pair(2,4)).toString() + " │ " + grid.at(std::make_pair(2,5)).toString() + " │ " + grid.at(std::make_pair(2,6)).toString() + " ║ " + grid.at(std::make_pair(2,7)).toString() + " │ " + grid.at(std::make_pair(2,8)).toString() + " │ " + grid.at(std::make_pair(2,9)).toString() + " ║" << std::endl;
    std::cout << "   ╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" << std::endl;
