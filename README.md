@@ -1,7 +1,9 @@
 # sudoku-solver
 A program for solving sudoku puzzles.
 
-## Python
+## Running
+
+### python
 
 Run with the command
 
@@ -9,7 +11,21 @@ Run with the command
 python sudokuSolver.py <puzzle>
 ```
 
-where `<puzzle>` is a file of the form
+### c++
+
+First build by running
+
+```
+make
+```
+
+then run with
+
+```
+./sudokuSolver <puzzle>
+```
+
+In all cases `<puzzle>` is a file of the form
 
 ```
 1 5 x 8 x 2 x x 7
@@ -48,7 +64,8 @@ which represents the sudoku puzzle
 ```
 
 ## Test Cases
-All test cases were taken from *Sudoku Puzzles*, Vol. 168, Kappa Books 2011.
+All test cases were taken from *Sudoku Puzzles*, Vol. 168, Kappa Books 2011. Except those labeled
+`hardest` which can be found [here](http://www.sudokuwiki.org/Arto_Inkala_Sudoku).
 
 - One-star puzzles: 1, 14, 19, 22, and 24.
 - Two-star puzzles: 29, 32, 36, 40, and 52.

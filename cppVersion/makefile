@@ -15,7 +15,7 @@ clean:
 	rm  *.d *.o
 	
 cleanall:
-	rm  *.d *.o main
+	rm  *.d *.o sudokuSolver
 	
 -include $(DPND)
 
